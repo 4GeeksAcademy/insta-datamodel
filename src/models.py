@@ -28,10 +28,11 @@ class Story(Base):
 username = Column(String(20), ForeignKey=True)
 caption = Column(String(250))
 views = Column(Integer)
+media_url = Column(String(250))
 
 class Posts(Base):
     __tablename__ = 'Posts'
-    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("username.id"))
     caption = Column(String(250))
     comments = Column(String(250))
     likes = Column(Integer)
@@ -39,11 +40,11 @@ class Posts(Base):
 
 class Username(Base):
     __tablename__ = 'Username'
-    username = Column(String(20), primary_key=True)
+    username = Column(String(20), nullable=False, primary_key=True)
     name = Column(String(250), nullable=False)
-    email = Column(String(250))
-    password = Column(String(250))
-    phone_number = Column(Integer)
+    email = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    phone_number = Column(Integer, nullable=False)
     posts = Column(Integer)
     bio = Column(String(250))
 
