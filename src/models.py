@@ -1,55 +1,57 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
+from datetime import datetime
 from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Following(Base):
-    _tablename__ = 'Following'
-username = Column(String(20), ForeignKey=True)
-name = Column(String(250), nullable=False)
-bio = Column(String(250))
-email = Column(String(250))
-phone_number = Column(Integer)
+class Username(Base):
+  __tablename__ = 'username'
+  id = Column(Integer, primary_key=True)
+  username = Column(String(20), nullable=False)
+  name = Column(String(25), nullable=False)
+  bio = Column(String(250), nullable=True)
+  email = Column(String(200), nullable=False)
+  password = Column(String(20), nullable=False)
+  phone_number = Column(Integer, nullable=False)
+  
+class Story(Base):
+  __tablename__ = 'story'
+  id = Column(Integer, primary_key=True)
+  views = Column(Integer, nullable=False)
+  caption = Column(String(250), nullable=True)
+  shares = Column(Integer, nullable=True)
+  media_url = Column(String(80))
+
+class Post(Base):
+  __tablename__= 'post'
+  id = Column(Integer, primary_key=True)
+  photo_id = Column(Integer, nullable=False)
+  caption = Column(String(250), nullable=True)
+  likes = Column(Integer, nullable=True)
+  comment = Column(String(250), nullable=True)
+  shares = Column(Integer)
 
 class Followers(Base):
-    _tablename__ = 'Followers'
-username = Column(String(20), ForeignKey=True)
-name = Column(String(250), nullable=False)
-bio = Column(String(250))
-email = Column(String(250))
-phone_number = Column(Integer)
+  __tablename__= 'followers'
+  id = Column(Integer, primary_key=True)
+  name = Column(String(25), nullable=False)
+  email = Column(String(200), nullable=False)
+  password = Column(String(20), nullable=False)
+  bio = Column(String(250))
+  phone_number = Column(Integer, nullable=False)
 
-class Story(Base):
-    __tablename__ = "Story"
-username = Column(String(20), ForeignKey=True)
-caption = Column(String(250))
-views = Column(Integer)
-media_url = Column(String(250))
-
-class Posts(Base):
-    __tablename__ = 'Posts'
-    user_id = Column(Integer, ForeignKey("username.id"))
-    caption = Column(String(250))
-    comments = Column(String(250))
-    likes = Column(Integer)
-    shares = Column(Integer)
-
-class Username(Base):
-    __tablename__ = 'Username'
-    username = Column(String(20), nullable=False, primary_key=True)
-    name = Column(String(250), nullable=False)
-    email = Column(String(250), nullable=False)
-    password = Column(String(250), nullable=False)
-    phone_number = Column(Integer, nullable=False)
-    posts = Column(Integer)
-    bio = Column(String(250))
-
-    def to_dict(self):
-        return {}
+class User(Base):
+  __tablename__= 'user'
+  id = Column(Integer, primary_key=True)
+  username_id = Column(Integer, ForeignKey('username.id'))
+  story_id = Column(Integer, ForeignKey('story.id'))
+  post_id = Column(Integer, ForeignKey('post.id'))
+  followers_id = Column(Integer, ForeignKey('followers.id'))
+  
 
 ## Draw from SQLAlchemy base
 try:
