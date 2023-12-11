@@ -7,23 +7,45 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class Following(Base):
+    _tablename__ = 'Following'
+username = Column(String(20), ForeignKey=True)
+name = Column(String(250), nullable=False)
+bio = Column(String(250))
+email = Column(String(250))
+phone_number = Column(Integer)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+class Followers(Base):
+    _tablename__ = 'Followers'
+username = Column(String(20), ForeignKey=True)
+name = Column(String(250), nullable=False)
+bio = Column(String(250))
+email = Column(String(250))
+phone_number = Column(Integer)
+
+class Story(Base):
+    __tablename__ = "Story"
+username = Column(String(20), ForeignKey=True)
+caption = Column(String(250))
+views = Column(Integer)
+
+class Posts(Base):
+    __tablename__ = 'Posts'
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    caption = Column(String(250))
+    comments = Column(String(250))
+    likes = Column(Integer)
+    shares = Column(Integer)
+
+class Username(Base):
+    __tablename__ = 'Username'
+    username = Column(String(20), primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250))
+    password = Column(String(250))
+    phone_number = Column(Integer)
+    posts = Column(Integer)
+    bio = Column(String(250))
 
     def to_dict(self):
         return {}
